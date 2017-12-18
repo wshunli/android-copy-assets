@@ -37,7 +37,7 @@ public class CopyAssets {
      * @param context 上下文
      * @param filePath Assets下级目录，全部写""
      * @param desDir 目标文件夹
-     * @return
+     * @return {@code true}: 复制成功<br>{@code false}: 复制失败
      */
     public static boolean copy(Context context, String filePath, String desDir) {
 
