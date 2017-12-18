@@ -1,3 +1,18 @@
+/*
+ * Copyright 2017 wshunli
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.wshunli.assets;
 
 import android.content.Context;
@@ -5,7 +20,6 @@ import android.content.Context;
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,13 +27,18 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-/**
- * Created by wshunli on 2017/12/17.
- */
 
 public class CopyAssets {
 
 
+    /**
+     * 复制Assets下文件及文件夹到设备指定路径
+     *
+     * @param context 上下文
+     * @param filePath Assets下级目录，全部写""
+     * @param desDir 目标文件夹
+     * @return
+     */
     public static boolean copy(Context context, String filePath, String desDir) {
 
 
@@ -34,7 +53,8 @@ public class CopyAssets {
             if (desFile == null) return false;
             try {
                 InputStream is = context.getAssets().open(path);
-                writeFileFromIS(desFile, is);
+                boolean result = writeFileFromIS(desFile, is);
+                if (!result) return false;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 return false;
@@ -48,7 +68,14 @@ public class CopyAssets {
 
     }
 
-
+    /**
+     * 获得Assets下所有文件列
+     *
+     * @param context 上下文
+     * @param oriPath Assets下级目录，全部写""
+     * @param paths 用于迭代的文件列表，初始值为n
+     * @return 返回文件列表
+     */
     private static ArrayList<String> getAssetsFilePath(Context context, String oriPath, ArrayList<String> paths) {
 
         if (paths == null) paths = new ArrayList<>();
@@ -68,28 +95,6 @@ public class CopyAssets {
         } catch (IOException e) {
             e.printStackTrace();
             return paths;
-        }
-
-    }
-
-    /**
-     * 复制文件到指定路径
-     *
-     * @param file 文件
-     * @param desPath 文件路径
-     * @return {@code true}: 复制成功<br>{@code false}: 复制失败
-     */
-    private static boolean copyFile2Path(File file, String desPath) {
-
-        File desFile = getFileByPath(desPath);
-        if (file == null || desFile == null) return false;
-
-        try {
-            InputStream is = new FileInputStream(file);
-            return CopyAssets.writeFileFromIS(desFile, is);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
         }
 
     }
@@ -180,20 +185,4 @@ public class CopyAssets {
         }
     }
 
-
-    interface onCopyStart {
-
-    }
-
-    interface onCopyProgress {
-
-    }
-
-    interface onCopyError {
-
-    }
-
-    interface onCopySuccess {
-
-    }
 }
