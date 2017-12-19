@@ -33,18 +33,26 @@ public class MainActivity extends AppCompatActivity {
 
 
         String innerPath = getFilesDir().getAbsolutePath();
-        Log.d(TAG, "innerPath: "+innerPath);
-        CopyAssets.copy(MainActivity.this, "", innerPath);
+        Log.d(TAG, "innerPath: " + innerPath);
+        CopyAssets.with(this)
+                .to(innerPath)
+                .copy();
 
 
-        String externalPath = ContextCompat.getExternalFilesDirs(this,null)[0].getAbsolutePath();
-        Log.d(TAG, "externalPath: "+externalPath);
-        CopyAssets.copy(MainActivity.this, "", externalPath);
+        String externalPath = ContextCompat.getExternalFilesDirs(this, null)[0].getAbsolutePath();
+        Log.d(TAG, "externalPath: " + externalPath);
+        CopyAssets.with(this)
+                .from("dir1")
+                .to(externalPath)
+                .copy();
 
         String externalDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/com.wshunli.android.assets";
         Log.d(TAG, "externalDirectory: " + externalDirectory);
-        CopyAssets.copy(MainActivity.this, "", externalDirectory);
+        CopyAssets.with(this)
+                .from("")
+                .to(externalDirectory)
+                .copy();
 
     }
 

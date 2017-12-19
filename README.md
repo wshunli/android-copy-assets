@@ -1,13 +1,12 @@
 # android-copy-assets
 
 [![Build Status](https://travis-ci.org/wshunli/android-copy-assets.svg?branch=master)](https://travis-ci.org/)
-[ ![Download](https://api.bintray.com/packages/wshunli/maven/android-copy-assets/images/download.svg) ](https://bintray.com/wshunli/maven/android-copy-assets/_latestVersion)
+[![Download](https://api.bintray.com/packages/wshunli/maven/android-copy-assets/images/download.svg)](https://bintray.com/wshunli/maven/android-copy-assets/_latestVersion)
 [![GitHub license](https://img.shields.io/github/license/wshunli/android-copy-assets.svg)](https://github.com/wshunli/android-copy-assets)
 
 Library for copying assets files and folders to the device
 
 ## Download
-
 
 Install android-copy-assets library.
 
@@ -17,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.wshunli.android:android-copy-assets:1.0.0'
+    compile 'com.wshunli.android:android-copy-assets:2.0.0'
 }
 ```
 
@@ -38,10 +37,40 @@ So if you are targeting Android 6.0+, you need to handle runtime permission requ
 #### Simple usage snippet
 
 ``` Java
-CopyAssets.copy(Context context, String filePath, String desDir)
+CopyAssets.with(this)
+        .from("dir1")
+        .to(externalPath)
+        .copy();
 ```
 
+For more information about [Data Storage](https://developer.android.com/guide/topics/data/data-storage.html).
+
 #### More
+
+If you want copy all the files and and folders in assets, you can remove the `from` method.
+
+``` Java
+CopyAssets.with(this)
+        .to(externalPath)
+        .copy();
+```
+
+or
+
+``` Java
+CopyAssets.with(this)
+        .from("")
+        .to(externalPath)
+        .copy();
+```
+
+You can also remove the `to` method, while it means copy files and folders to Internal Storage.
+
+``` Java
+CopyAssets.with(this)
+        .from("")
+        .copy();
+```
 
 Find more details about android-copy-assets in [sample](https://github.com/wshunli/android-copy-assets/tree/master/app).
 

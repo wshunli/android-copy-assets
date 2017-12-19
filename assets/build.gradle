@@ -22,8 +22,6 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
     }
 
     buildTypes {
@@ -45,7 +43,7 @@ publish {
     userOrg = 'wshunli'
     groupId = 'com.wshunli.android'
     artifactId = 'android-copy-assets'
-    publishVersion = '1.0.0'
+    publishVersion = '2.0.0'
     desc = 'Library for copying assets files and folders to the device'
     website = 'https://github.com/wshunli/android-copy-assets'
 }

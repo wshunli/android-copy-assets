@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-copy-assets.iml" filepath="$PROJECT_DIR$/android-copy-assets.iml" />
+      <module fileurl="file://D:\android-copy-assets\android-copy-assets.iml" filepath="D:\android-copy-assets\android-copy-assets.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\android-copy-assets\app\app.iml" filepath="D:\android-copy-assets\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/assets/assets.iml" filepath="$PROJECT_DIR$/assets/assets.iml" />
+      <module fileurl="file://D:\android-copy-assets\assets\assets.iml" filepath="D:\android-copy-assets\assets\assets.iml" />
     </modules>
   </component>
 </project>
