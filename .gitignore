@@ -26,8 +26,8 @@ out/
 
 # Gradle build files
 assets/build
-sample/build
-sample/release
+app/build
+app/release
 
 
 

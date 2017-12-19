@@ -1,7 +1,9 @@
 # android-copy-assets
 
+[![bintray Download](https://api.bintray.com/packages/wshunli/maven/android-copy-assets/images/download.svg)](https://bintray.com/wshunli/maven/android-copy-assets/_latestVersion)
 [![Build Status](https://travis-ci.org/wshunli/android-copy-assets.svg?branch=master)](https://travis-ci.org/)
-[![Download](https://api.bintray.com/packages/wshunli/maven/android-copy-assets/images/download.svg)](https://bintray.com/wshunli/maven/android-copy-assets/_latestVersion)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/56d5eb885b924b058b1e0f6c3bc0f8cf)](https://www.codacy.com/app/wshunli/android-copy-assets?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wshunli/android-copy-assets&amp;utm_campaign=Badge_Grade)
+[![Author](https://img.shields.io/badge/Author-wshunli-3388FF.svg)](http://www.wshunli.com)
 [![GitHub license](https://img.shields.io/github/license/wshunli/android-copy-assets.svg)](https://github.com/wshunli/android-copy-assets)
 
 Library for copying assets files and folders to the device
