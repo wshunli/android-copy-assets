@@ -3,7 +3,7 @@
 [![bintray Download](https://api.bintray.com/packages/wshunli/maven/android-copy-assets/images/download.svg)](https://bintray.com/wshunli/maven/android-copy-assets/_latestVersion)
 [![Build Status](https://travis-ci.org/wshunli/android-copy-assets.svg?branch=master)](https://travis-ci.org/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/56d5eb885b924b058b1e0f6c3bc0f8cf)](https://www.codacy.com/app/wshunli/android-copy-assets?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=wshunli/android-copy-assets&amp;utm_campaign=Badge_Grade)
-[![Author](https://img.shields.io/badge/Author-wshunli-3388FF.svg)](http://www.wshunli.com)
+[![Author](https://img.shields.io/badge/Author-wshunli-0E7FBF.svg)](http://www.wshunli.com)
 [![GitHub license](https://img.shields.io/github/license/wshunli/android-copy-assets.svg)](https://github.com/wshunli/android-copy-assets)
 
 Library for copying assets files and folders to the device
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.wshunli.android:android-copy-assets:2.0.0'
+    compile 'com.wshunli.android:android-copy-assets:2.1.0'
 }
 ```
 
@@ -49,7 +49,7 @@ For more information about [Data Storage](https://developer.android.com/guide/to
 
 #### More
 
-If you want copy all the files and and folders in assets, you can remove the `from` method.
+If you want copy all the files and folders in assets, you can remove the `from()` method.
 
 ``` Java
 CopyAssets.with(this)
@@ -57,7 +57,7 @@ CopyAssets.with(this)
         .copy();
 ```
 
-or
+Or the method parameters set to `""`.
 
 ``` Java
 CopyAssets.with(this)
@@ -66,11 +66,42 @@ CopyAssets.with(this)
         .copy();
 ```
 
-You can also remove the `to` method, while it means copy files and folders to Internal Storage.
+You can also remove the `to()` method, while it means copy files and folders to Internal Storage.
 
 ``` Java
 CopyAssets.with(this)
         .from("")
+        .copy();
+```
+
+#### CopyListener
+
+android-copy-assets support monitoring file copy progress.
+
+``` Java
+CopyAssets.with(this)
+        .to(innerPath)
+        .setListener(new CopyListener() {
+                @Override
+                public void pending(CopyCreator copyCreator, String oriPath, String desPath, List<String> names) {
+                Log.d(TAG, "pending: " + names.toString());
+                }
+
+                @Override
+                public void progress(CopyCreator copyCreator, File currentFile, int copyProgress) {
+                Log.d(TAG, "progress: " + copyProgress + "-->currentFile:" + currentFile.getName());
+                }
+
+                @Override
+                public void completed(CopyCreator copyCreator, Map<File, Boolean> results) {
+                Log.d(TAG, "completed: " + results.toString());
+                }
+
+                @Override
+                public void error(CopyCreator copyCreator, Throwable e) {
+                Log.d(TAG, "error: " + e);
+                }
+        })
         .copy();
 ```
 

@@ -22,6 +22,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.wshunli.assets.CopyAssets;
+import com.wshunli.assets.CopyCreator;
+import com.wshunli.assets.CopyListener;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -36,6 +42,27 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "innerPath: " + innerPath);
         CopyAssets.with(this)
                 .to(innerPath)
+                .setListener(new CopyListener() {
+                    @Override
+                    public void pending(CopyCreator copyCreator, String oriPath, String desPath, List<String> names) {
+                        Log.d(TAG, "pending: " + names.toString());
+                    }
+
+                    @Override
+                    public void progress(CopyCreator copyCreator, File currentFile, int copyProgress) {
+                        Log.d(TAG, "progress: " + copyProgress + "-->currentFile:" + currentFile.getName());
+                    }
+
+                    @Override
+                    public void completed(CopyCreator copyCreator, Map<File, Boolean> results) {
+                        Log.d(TAG, "completed: " + results.toString());
+                    }
+
+                    @Override
+                    public void error(CopyCreator copyCreator, Throwable e) {
+                        Log.d(TAG, "error: " + e);
+                    }
+                })
                 .copy();
 
 

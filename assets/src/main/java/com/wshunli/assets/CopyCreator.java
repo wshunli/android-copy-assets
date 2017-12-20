@@ -26,11 +26,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class CopyCreator {
 
     private final Context mContext;
     private String oriPath, desPath;
+    private CopyListener copyListener;
 
     CopyCreator(Context mContext) {
         this.mContext = mContext;
@@ -59,6 +62,17 @@ public final class CopyCreator {
     }
 
     /**
+     * 设置复制监听事件
+     *
+     * @param copyListener 监听器
+     * @return CopyCreator实例
+     */
+    public CopyCreator setListener(final CopyListener copyListener) {
+        this.copyListener = copyListener;
+        return this;
+    }
+
+    /**
      * 复制操作
      *
      * @return {@code true}: 复制成功<br>{@code false}: 复制失败
@@ -70,35 +84,57 @@ public final class CopyCreator {
     /**
      * 复制Assets下文件及文件夹到设备指定路径
      *
-     * @param context  上下文
-     * @param filePath Assets下级目录，全部写""
-     * @param desDir   目标文件夹,默认内部存储空间
+     * @param context 上下文
+     * @param oriPath Assets下级目录，全部写""
+     * @param desPath 目标文件夹,默认内部存储空间
      * @return {@code true}: 复制成功<br>{@code false}: 复制失败
      */
-    public boolean copy(Context context, String filePath, String desDir) {
+    public boolean copy(Context context, String oriPath, String desPath) {
 
-        filePath = filePath == null ? "" : filePath;
-        desDir = desDir == null ? context.getFilesDir().getAbsolutePath() : desDir;
+        oriPath = oriPath == null ? "" : oriPath;
+        desPath = desPath == null ? context.getFilesDir().getAbsolutePath() : desPath;
 
-        ArrayList<String> allAssetsFilePath = getAssetsFilePath(context, filePath, null);
+        ArrayList<String> allAssetsFilePath = getAssetsFilePath(context, oriPath, null);
 
-        for (String path : allAssetsFilePath) {
+        if (copyListener != null) {
+            copyListener.pending(this, oriPath, desPath, allAssetsFilePath);
 
-            File desFile = getFileByPath(desDir + "/" + path);
+        }
+
+        Map<File, Boolean> results = new HashMap<>();
+
+        int filesNum = allAssetsFilePath.size();
+        for (int i = 0; i < filesNum; i++) {
+
+            String path = allAssetsFilePath.get(i);
+            File desFile = getFileByPath(desPath + "/" + path);
             if (desFile == null) return false;
+
             try {
                 InputStream is = context.getAssets().open(path);
                 boolean result = writeFileFromIS(desFile, is);
                 if (!result) return false;
+
+                if (copyListener != null) {
+                    int progress = 100 * (i + 1) / filesNum;
+                    copyListener.progress(this, desFile, progress);
+                }
+
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                if (copyListener != null) copyListener.error(this, e);
                 return false;
             } catch (IOException e) {
-                e.printStackTrace();
+                if (copyListener != null) copyListener.error(this, e);
                 return false;
             }
+
+            results.put(desFile, true);
+
         }
 
+        if (copyListener != null) {
+            copyListener.completed(this, results);
+        }
         return true;
 
     }
@@ -128,7 +164,7 @@ public final class CopyCreator {
             }
             return paths;
         } catch (IOException e) {
-            e.printStackTrace();
+            if (copyListener != null) copyListener.error(this, e);
             return paths;
         }
 
@@ -154,6 +190,7 @@ public final class CopyCreator {
     private boolean writeFileFromIS(File file, InputStream is) {
         if (file == null || is == null) return false;
         if (!this.createOrExistsFile(file)) return false;
+
         OutputStream os = null;
         try {
             os = new BufferedOutputStream(new FileOutputStream(file));
@@ -164,7 +201,7 @@ public final class CopyCreator {
             }
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            if (copyListener != null) copyListener.error(this, e);
             return false;
         } finally {
             this.closeIO(is, os);
@@ -186,7 +223,7 @@ public final class CopyCreator {
         try {
             return file.createNewFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            if (copyListener != null) copyListener.error(this, e);
             return false;
         }
     }
@@ -214,10 +251,10 @@ public final class CopyCreator {
                 try {
                     closeable.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    if (copyListener != null) copyListener.error(this, e);
                 }
             }
         }
     }
-    
+
 }
