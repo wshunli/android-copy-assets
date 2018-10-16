@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.wshunli.android:android-copy-assets:2.1.0'
+    implementation 'com.wshunli.android:android-copy-assets:2.2.0'
 }
 ```
 
