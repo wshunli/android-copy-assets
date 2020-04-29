@@ -17,9 +17,12 @@ package com.wshunli.android.assets.sample;
 
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.wshunli.assets.CopyAssets;
 import com.wshunli.assets.CopyCreator;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final TextView TxCurFileName = findViewById(R.id.tx_progress);
 
         String innerPath = getFilesDir().getAbsolutePath();
         Log.d(TAG, "innerPath: " + innerPath);
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void progress(CopyCreator copyCreator, File currentFile, int copyProgress) {
                         Log.d(TAG, "progress: " + copyProgress + "-->currentFile:" + currentFile.getName());
+                        TxCurFileName.setText(currentFile.getName());
                     }
 
                     @Override
