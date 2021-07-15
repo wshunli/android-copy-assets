@@ -154,8 +154,8 @@ public final class CopyCreator {
         try {
             String[] list = context.getAssets().list(oriPath);
             for (String l : list) {
-                int length = context.getAssets().list(l).length;
                 String desPath = oriPath.equals("") ? l : oriPath + "/" + l;
+                int length = context.getAssets().list(desPath).length;
                 if (length == 0) {
                     paths.add(desPath);
                 } else {
